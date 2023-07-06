@@ -5,9 +5,9 @@
         "slim/psr7": "^1.6"
     },
     "autoload": {
-        "files": [
-            "src/sqlite.php",
-            "src/RepositoriesReviews.php"
-        ]
+        "psr-4": {
+            "src\\": "src/"
+        }
+
     }
 }
