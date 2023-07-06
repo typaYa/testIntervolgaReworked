@@ -1,14 +1,3 @@
-<?php
-use src\RepositoriesReviews;
-require __DIR__ . '/vendor/autoload.php';
-require 'config.php';
-if (isset($_POST['submit'])){
-    $RepositoriesReviews = new RepositoriesReviews("$path");
-    $text = $_POST['text'];
-    $RepositoriesReviews->addReview($text);
-}
-?>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -17,6 +6,7 @@ if (isset($_POST['submit'])){
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
 <style>
@@ -47,13 +37,38 @@ if (isset($_POST['submit'])){
 
     }
 </style>
-<form class="form" action="" method="post" >
-    <p style=" margin-top: 120px;color: #656565">Ваш отзыв</p>
-    <input class="text" type="text" name="text" placeholder="Напишите отзыв">
-    <input class="submit" type="submit" name="submit" >
+<form class="form"id="feedback-form" action="" method="post">
+    <p style="margin-top: 120px;color: #656565">Ваш отзыв</p>
+    <input class="text" type="text" name="text" placeholder="Введите ваш отзыв">
+    <input class="submit" type="submit" name="submit" value="Отправить">
 </form>
-
-
-
+<script>
+    $(document).ready(function () {
+        $("form").submit(function () {
+            // Получение ID формы
+            var formID = $(this).attr('id');
+            // Добавление решётки к имени ID
+            var formNm = $('#' + formID);
+            $.ajax({
+                type: "POST",
+                url: '/send.php',
+                data: formNm.serialize(),
+                beforeSend: function () {
+                    // Вывод текста в процессе отправки
+                    $(formNm).html('<p style="text-align:center">Отправка...</p>');
+                },
+                success: function (data) {
+                    // Вывод текста результата отправки
+                    $(formNm).html('<p style="text-align:center">'+data+'</p>');
+                },
+                error: function (jqXHR, text, error) {
+                    // Вывод текста ошибки отправки
+                    $(formNm).html(error);
+                }
+            });
+            return false;
+        });
+    });
+</script>
 </body>
 </html>
