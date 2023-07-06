@@ -1,11 +1,13 @@
 {
+    "ext-json": "*",
     "require": {
         "slim/slim": "4.*",
         "slim/psr7": "^1.6"
     },
     "autoload": {
-        "files": {
-
-        }
+        "files": [
+            "src/sqlite.php",
+            "src/RepositoriesReviews.php"
+        ]
     }
 }
