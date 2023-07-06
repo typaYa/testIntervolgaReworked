@@ -6,3 +6,6 @@ $queryCreate = "CREATE TABLE reviews(
         text TEXT,
         add_date DATE  
 )";
+$validUsers = [
+    'user1'=>'password1'
+];
