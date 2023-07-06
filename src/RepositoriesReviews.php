@@ -34,7 +34,6 @@ class RepositoriesReviews
     }
 
     public function addReview($data) {
-        // Проверяем наличие обязательных полей в данных
         if (!isset($data)) {
             return ['error' => 'Missing required field: text'];
         }
@@ -53,5 +52,10 @@ class RepositoriesReviews
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return "Удалено записей:".$stmt->rowCount();
+    }
+    public function getAllReviews() {
+        $query = 'SELECT * FROM reviews';
+        $result = $this->pdo->query($query);
+        return count($result->fetchAll(PDO::FETCH_ASSOC));
     }
 }
