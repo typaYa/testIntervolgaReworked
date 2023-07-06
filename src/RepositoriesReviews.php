@@ -33,4 +33,25 @@ class RepositoriesReviews
         return $reviews;
     }
 
+    public function addReview($data) {
+        // Проверяем наличие обязательных полей в данных
+        if (!isset($data)) {
+            return ['error' => 'Missing required field: text'];
+        }
+        $currentDate = date("Y-m-d");
+        $stmt = $this->pdo->prepare("INSERT INTO reviews (id,text, date_added) VALUES (null,:text,:date_added )");
+        $stmt->bindParam(':text', $data);
+        $stmt->bindParam(':date_added', $currentDate);
+        $stmt->execute();
+
+        return ['message' => 'Review added successfully'];
+    }
+    public function deleteReviewById($id)
+    {
+        $query = "DELETE FROM reviews WHERE id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return "Удалено записей:".$stmt->rowCount();
+    }
 }

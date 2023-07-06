@@ -30,4 +30,23 @@ $app->get('/api/feedbacks/', function (Request $request, Response $response, $ar
 
 });
 
+$app->get('/addReview',function (Request $request, Response $response) use ($RepositoriesReviews){
+    $text = 'Все окей';
+    $result = $RepositoriesReviews->addReview($text);
+
+    if(isset($result['error'])){
+        $response->getBody()->write("Что-то не так");
+    }
+    else{$response->getBody()->write("Добавлено");}
+
+    return $response;
+});
+
+$app->get('/deleteReviews',function (Request $request, Response $response) use ($RepositoriesReviews){
+    $id = 72;
+    $RepositoriesReviews->deleteReviewById($id);
+    $response->getBody()->write("Удалено");
+    return $response;
+});
+
 $app->run();
