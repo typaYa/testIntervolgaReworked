@@ -37,17 +37,13 @@ $basicAuthMiddleware = function (Request $request, RequestHandlerInterface $hand
 };
 
 $app->get('/', function (Request $request, Response $response, $args) {
-    print_r('qweqwe');
-});
-
-$app->get('/api/feedbacks/{id}', function (Request $request, Response $response, $args) use ($RepositoriesReviews) {
-    $id = $args['id'];
-    $review = $RepositoriesReviews->SearchReview($id);
-    $response->getBody()->write(json_encode($review));
+    $response->getBody()->write("Hello world!");
     return $response;
 });
 
-$app->get('/api/feedbacks/', function (Request $request, Response $response, $args) use ($RepositoriesReviews) {
+
+
+$app->get('/api/feedbacks', function (Request $request, Response $response, $args) use ($RepositoriesReviews) {
     $data = $request->getQueryParams();
     $page = $data['page'];
     $perPage = 20;
@@ -57,7 +53,7 @@ $app->get('/api/feedbacks/', function (Request $request, Response $response, $ar
 
 });
 
-$app->get('/addReview',function (Request $request, Response $response) use ($RepositoriesReviews){
+$app->get('/api/feedbacks/addReview',function (Request $request, Response $response) use ($RepositoriesReviews){
     $text = 'Все окей';
     $result = $RepositoriesReviews->addReview($text);
 
@@ -69,11 +65,16 @@ $app->get('/addReview',function (Request $request, Response $response) use ($Rep
     return $response;
 });
 
-$app->get('/deleteReviews',function (Request $request, Response $response) use ($RepositoriesReviews){
-    $id = 72;
+$app->get('/api/feedbacks/delete',function (Request $request, Response $response,$args) use ($RepositoriesReviews){
+    $id = 86;
     $RepositoriesReviews->deleteReviewById($id);
     $response->getBody()->write("Удалено");
     return $response;
 })->add($basicAuthMiddleware);
-
+$app->get('/api/feedbacks/{id}', function (Request $request, Response $response, $args) use ($RepositoriesReviews) {
+    $id = $args['id'];
+    $review = $RepositoriesReviews->SearchReview($id);
+    $response->getBody()->write(json_encode($review));
+    return $response;
+});
 $app->run();
